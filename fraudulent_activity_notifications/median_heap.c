@@ -345,6 +345,7 @@ static void init_moving_median(MovingMedian* median, int max_samples)
 
 static void destroy_moving_median(MovingMedian* median)
 {
+    free(median->samples);
     destroy_heap(median->max_heap);
     destroy_heap(median->min_heap);
     free(median->max_heap);

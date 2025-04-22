@@ -366,6 +366,8 @@ private:
     }
 };
 
+// for every contiguous subsequence of size k in the input array of size n, print the max
+// integer in that subsequence. k is always <= n, k and n are always >= 1.
 void printKMax(int arr[], int n, int k){
 
     BinaryHeap<int> maxHeap(true, k);

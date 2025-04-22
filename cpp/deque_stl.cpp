@@ -1,3 +1,5 @@
+// Solves: https://www.hackerrank.com/challenges/deque-stl/problem?isFullScreen=true
+
 #include <iostream>
 #include <deque> 
 #include <cmath>

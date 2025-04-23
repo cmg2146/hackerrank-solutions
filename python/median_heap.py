@@ -1,3 +1,7 @@
+"""
+Solves: https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem?isFullScreen=true
+"""
+
 from dataclasses import dataclass
 from typing import Generic, Optional, TypeVar
 

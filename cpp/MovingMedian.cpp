@@ -1,3 +1,5 @@
+// Solves: https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem?isFullScreen=true
+
 #include <cmath>
 #include <stdexcept>
 #include <vector>

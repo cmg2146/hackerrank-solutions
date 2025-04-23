@@ -1,3 +1,4 @@
+// Solves: https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem?isFullScreen=true
 
 #define TRUE (1)
 #define FALSE (0)

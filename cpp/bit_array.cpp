@@ -26,7 +26,7 @@ int main() {
     numbersSeen[s] = true;
 
     // now calculate the remaining values
-    for (int i = 1; i < n; i++)
+    for (long long i = 1; i < n; i++)
     {
         auto rawVal = (prevVal * p) + q;
         auto val = rawVal % MOD;

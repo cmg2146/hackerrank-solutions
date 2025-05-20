@@ -40,7 +40,7 @@ class BinaryHeap(Generic[TValue]):
         """Gets the root node in the heap, or None if heap is empty"""
         try:
             return self._heap[0]
-        except:
+        except IndexError:
             return None
 
     def add(self, value: TValue) -> BinaryHeapNode[TValue]:
@@ -76,9 +76,7 @@ class BinaryHeap(Generic[TValue]):
         if (ourRoot is None) or (theirRoot is None):
             raise RuntimeError("One of the heaps is empty! Can't swap roots")
 
-        tempOurRoot = ourRoot
-        ourRoot = theirRoot
-        theirRoot = tempOurRoot
+        ourRoot, theirRoot = (theirRoot, ourRoot)
         ourRoot.heap = self
         theirRoot.heap = other_heap
         self._heap[0] = ourRoot

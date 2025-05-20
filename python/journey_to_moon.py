@@ -5,19 +5,32 @@ from typing import Iterator, Self
 
 
 class Graph:
-    """A simple graph"""
+    """A simple graph implementation"""
 
     def __init__(self):
+        """Constructs a new instance of a Graph"""
         self._nodes: set[int] = set()
         self._edges: dict[int, set[int]] = {}
 
     def size(self) -> int:
+        """Returns number of nodes in the graph"""
         return len(self._nodes)
 
     def add_node(self, node: int):
+        """Adds a new node to the graph. The call is a no-op if the node already exists in the
+        graph.
+        
+        :param node: The new node to add.
+        """
         self._nodes.add(node)
-    
+
     def add_edge(self, node1: int, node2: int):
+        """Adds an edge to the graph. The call is a no-op if the edge already exists in the
+        graph.
+        
+        :param node1: The first node in the edge
+        :param node2: The second node in the edge
+        """
         node1_edges = self._edges.get(node1, set())
         node2_edges = self._edges.get(node2, set())
         node1_edges.add(node2)
@@ -33,12 +46,14 @@ class Graph:
             # skip this node if it was already visited (part of another subgraph already yielded)
             if node in visited:
                 continue
-            
+
             # NOTE: The implementation here is incomplete - no edges are added to the yielded graph
             # because they are not needed to solve the problem (this would be bad design in a real
             # program)
             graph = Graph()
-            [graph.add_node(x) for x in self._visit_all_connected_nodes(node, visited)]
+            for reachable_node in self._visit_all_connected_nodes(node, visited):
+                graph.add_node(reachable_node)
+
             yield graph
 
     def _visit_all_connected_nodes(self, node: int, visited: set[int]) -> Iterator[int]:
@@ -58,11 +73,11 @@ class Graph:
             for cn in self._edges[cur_node]:
                 if cn not in visited:
                     node_stack.append(cn)
-            
+
 
 def journeyToMoon(n, astronaut):
     # Write your code here
-    
+
     # FIRST: build the incoming astronaut pairs into a graph
     graph = Graph()
     for pair in astronaut:
@@ -75,7 +90,7 @@ def journeyToMoon(n, astronaut):
     # total pairs of different countries = total pairs - total pairs same country
     # calculating total pairs and total pairs same country are easy once we figure out the
     # number of astronauts in each country
-    # formula for combinations of pairs = n! / (2 * (n - 2)!) = n * (n - 1) / 2 
+    # formula for combinations of pairs = n! / (2 * (n - 2)!) = n * (n - 1) / 2
     total_pairs = int(n * (n - 1) / 2)
 
     # each complete subgraph in the overall graph represents a group of astronauts in the same
@@ -83,6 +98,8 @@ def journeyToMoon(n, astronaut):
     total_pairs_same_country = 0
     for country in graph.get_subgraphs():
         astronauts_in_country = country.size()
-        total_pairs_same_country += int(astronauts_in_country * (astronauts_in_country - 1) / 2)
-    
+        total_pairs_same_country += int(
+            astronauts_in_country * (astronauts_in_country - 1) / 2
+        )
+
     return total_pairs - total_pairs_same_country

@@ -14,11 +14,14 @@ static char* get_message_start(char* header);
 static char* parse_binary(char* s, UINT* ret_val, UINT len);
 static void decode_message(char* header, char* message);
 
+// Returns the maximum number of keys with the given length
 static UINT get_number_of_keys(UINT key_len)
 {
     return (1U << key_len) - 1;
 }
 
+// Returns the position at which the first key of the specified length maps to in the header.
+// The offset is simply the total number of keys with smaller key lengths.
 static UINT get_key_offset(UINT key_len)
 {
     UINT result = 0;
@@ -30,6 +33,8 @@ static UINT get_key_offset(UINT key_len)
     return result;
 }
 
+// Returns a pointer to the beggining of the encoded message (everything past the header and
+// new line character)
 static char* get_message_start(char* header)
 {
     // header appears on a line by itself and the actual message will begin after the newline
@@ -38,23 +43,28 @@ static char* get_message_start(char* header)
     return header;
 }
 
+// converts a string of binary characters of the specified length to their decimal value.
+// The result is populated in the "ret-val" argument and the function returns a pointer which
+// is the input string advanced one position ahead of the last character processed.
 static char* parse_binary(char* s, UINT* ret_val, UINT len)
 {
     char bit;
     UINT bit_val;
-
-    *ret_val = 0;
+    UINT result = 0;
 
     for (UINT index = 0; index < len; index++)
     {
         while (bit = *s++, bit == '\r');  // ignore carriage returns
         bit_val = (bit == '1') ? 1 : 0;
-        *ret_val = ((*ret_val) * 2) + bit_val;
+        result = (result * 2) + bit_val;
     }
+
+    *ret_val = result;
 
     return s;
 }
 
+// prints every character in the decoded message
 static void decode_message(char* header, char* message)
 {
     UINT key_len;
